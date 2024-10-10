@@ -681,7 +681,7 @@ function addCopyBtn(ele,v) {
                 qtdeJust =document.getElementById("W0135vGRIDGEDMATDISCAVAFLTJUST_0001").value;
                 if(qtdeJust != qtdeFaltas){
 
-                    document.getElementById("W0135vGEDJUSDSC").value = "Estudante fez PCA";
+                    document.getElementById("W0135vGEDJUSDSC").value = 'A compensação de ausência é assegurada no Constituição Federal nos artigos 205° e 208°, no Estatuto da Criança e do Adolescente, Lei n° 8.069/90, nos artigos 53°, 54°, 55° e 56°, na LDB, Lei n° 9.394/96, nos artigos 5°, 12°, 13° e 24°, e nas Portarias 347/2019/GS/SEDUC/MT. E reafirmada pela Portaria nº 337/2024/GS/SEDUC/MT sobre o enfrentamento do abandono e evasão escolar e a Portaria nº 248/2024/GS/SEDUC/MT que institui o Programa “Nenhum Estudante a Menos.';
                     document.getElementById("W0135vGRIDGEDMATDISCAVAFLTJUST_0001").value = qtdeFaltas;
                     output.push(["foi",
                             "foi",
