@@ -3,10 +3,13 @@
 // @namespace    http://tampermonkey.net/
 // @version      v0.1
 // @description  try to take over the world!
-// @author       You
+// @author       Lucas Monteiro
 // @match        http://sigeduca.seduc.mt.gov.br/ged/hwmlancaavaliacaonotahab.aspx?*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=gov.br
 // @grant        none
+// @updateURL    https://github.com/lksoumon/sigeducaLancamentos/raw/refs/heads/main/notas.user.js
+// @downloadURL  https://github.com/lksoumon/sigeducaLancamentos/raw/refs/heads/main/notas.user.js
+
 // ==/UserScript==
 var carregado = ''; // variavél para verificar se os dados dos alunos foram carregados
 var output = [];
