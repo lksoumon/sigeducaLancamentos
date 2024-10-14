@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         notas parciais
 // @namespace    http://tampermonkey.net/
-// @version      v0.1
+// @version      v0.2
 // @description  try to take over the world!
 // @author       Lucas Monteiro
 // @match        http://sigeduca.seduc.mt.gov.br/ged/hwmlancaavaliacaonotahab.aspx?*
@@ -91,14 +91,14 @@ function arrayToHtmlTable(dataArray) {
       }
     }
 function stringToArray(string) {
-   
+
         // Tenta fazer o parse da string como uma array JSON
         const str = string.replace(/'/g, '"');
         //console.log(str);
         const array = JSON.parse(str);
         //console.log(array);
         return array;
-       
+
 }
 
 
@@ -124,7 +124,7 @@ function addCopyBtn(ele,v) {
 
         ele.insertBefore(btn, ele.firstChild);
     }
-
+    var totalFaltas = 0;
     function addPCABtn(ele,v) {
     //console.log('as');
         let btn = document.createElement("span");
@@ -133,7 +133,7 @@ function addCopyBtn(ele,v) {
         btn.onclick = () => {
             const eek = document.getElementById("vDISCIPLINAAREACOD");
             var selectedValues = getSelectedValues(eek);
-
+            totalFaltas = 0;
             waitForNotificationHidden3(v);
 
         }
@@ -364,9 +364,9 @@ function addCopyBtn(ele,v) {
         btn.onclick = () => {
             notaManual(btn.valorBimestre);
         }
-        
+
         subMenu.appendChild(btn);
-    
+
     }
 
     // Adiciona o submenu ao menu flutuante
@@ -472,7 +472,7 @@ function addCopyBtn(ele,v) {
 
 
 
-            
+
 
             if (precisa == 0){ }
 
@@ -569,6 +569,7 @@ function addCopyBtn(ele,v) {
     async function waitForNotificationHidden3(bima) {
         var output = [['Nome - cod','turma','disciplina','lançou nota?','bimestre']];
         var bb = bima;
+        var totalFaltas = 0;
         const bim = document.getElementById("vGEDMATDISCAVAREF");
         var bimes = getSelectedValues(bim);
         //console.log(bimes);
@@ -649,15 +650,18 @@ function addCopyBtn(ele,v) {
 
                 qtdeFaltas = document.getElementById("W0135vGGEDMATDISCAVAQTDFLT_0001").value;
                 qtdeJust =document.getElementById("W0135vGGEDMATDISCAVAFLTJUSTIFICADAS_0001").value;
-                if(qtdeJust != qtdeFaltas){
-                    //let mudar = document.getElementById('W0135vGGEDCONSGL_0001');
-                    document.getElementById("W0135vGGEDMATDISCAVAFLTJUSTIFICADAS_0001").value = qtdeFaltas;
-                    
-                    output.push(["foi",
-                            "foi",
-                           "foi",
+                totalFaltas = totalFaltas+ parseInt(qtdeFaltas);
+                output.push([document.getElementById('span_W0135vEGEDALUNOM_0001').textContent.trim(),
+                            document.getElementById("span_vGERTURSAL").textContent.trim(),
+                            eek.options[eek.selectedIndex].text,
                             qtdeJust+" faltas justificadas",
                             bb+"º bimestre"]);
+
+                if(qtdeJust != qtdeFaltas){
+                    //let mudar = document.getElementById('W0135vGGEDCONSGL_0001');
+                    document.getElementById("W0135vGGEDMATDISCAVAFLTJUSTIFICADAS_0001").value = parseInt(qtdeFaltas);
+
+                   
 
                     console.log("hitar conf");
 
@@ -679,15 +683,18 @@ function addCopyBtn(ele,v) {
 
                 qtdeFaltas = document.getElementById("W0135vGRIDGEDMATDISCAVAQTDFLT_0001").value;
                 qtdeJust =document.getElementById("W0135vGRIDGEDMATDISCAVAFLTJUST_0001").value;
-                if(qtdeJust != qtdeFaltas){
-
-                    document.getElementById("W0135vGEDJUSDSC").value = 'A compensação de ausência é assegurada no Constituição Federal nos artigos 205° e 208°, no Estatuto da Criança e do Adolescente, Lei n° 8.069/90, nos artigos 53°, 54°, 55° e 56°, na LDB, Lei n° 9.394/96, nos artigos 5°, 12°, 13° e 24°, e nas Portarias 347/2019/GS/SEDUC/MT. E reafirmada pela Portaria nº 337/2024/GS/SEDUC/MT sobre o enfrentamento do abandono e evasão escolar e a Portaria nº 248/2024/GS/SEDUC/MT que institui o Programa “Nenhum Estudante a Menos.';
-                    document.getElementById("W0135vGRIDGEDMATDISCAVAFLTJUST_0001").value = qtdeFaltas;
-                    output.push(["foi",
-                            "foi",
-                            "foi",
-                            qtdeJust+" faltas justificadas",
+                totalFaltas = totalFaltas+ parseInt(qtdeFaltas);
+                output.push([document.getElementById('span_W0135vGRIDGEDALUCOD_0001').textContent.trim() + " - "+document.getElementById('span_W0135vGRIDGEDALUNOM_0001').textContent.trim(),
+                            document.getElementById("span_vGERTURSAL").textContent.trim(),
+                            eek.options[eek.selectedIndex].text,
+                            qtdeFaltas+" faltas justificadas",
                             bb+"º bimestre"]);
+
+                if(qtdeJust != qtdeFaltas){
+                    document.getElementById("W0135vGEDJUSDSC").value = "Aluno fez PCA";
+                    //document.getElementById("W0135vGEDJUSDSC").value = 'A compensação de ausência é assegurada no Constituição Federal nos artigos 205° e 208°, no Estatuto da Criança e do Adolescente, Lei n° 8.069/90, nos artigos 53°, 54°, 55° e 56°, na LDB, Lei n° 9.394/96, nos artigos 5°, 12°, 13° e 24°, e nas Portarias 347/2019/GS/SEDUC/MT. E reafirmada pela Portaria nº 337/2024/GS/SEDUC/MT sobre o enfrentamento do abandono e evasão escolar e a Portaria nº 248/2024/GS/SEDUC/MT que institui o Programa “Nenhum Estudante a Menos.';
+                    document.getElementById("W0135vGRIDGEDMATDISCAVAFLTJUST_0001").value = parseInt(qtdeFaltas);
+                    
 
                     console.log("hitar conf");
 
@@ -730,7 +737,11 @@ function addCopyBtn(ele,v) {
 
             // -----------------------------------------------------------------
         }
-
+        output.push(["total de faltas no bimestre:",
+                            "",
+                            "",
+                            totalFaltas+" faltas justificadas",
+                            ""]);
         //console.log("Fim do loop");
         arrayToHtmlTable(output);
     }
