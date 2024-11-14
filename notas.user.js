@@ -379,7 +379,7 @@ function addCopyBtn(ele,v) {
 
     // Cria o botão principal "Carimbo Digital"
     var mainButton = document.createElement('button');
-    mainButton.textContent = 'Lançar notas manuais';
+    mainButton.textContent = 'Migrar notas manuais';
     mainButton.addEventListener('click', toggleSubMenu);
     floatingMenu.appendChild(mainButton);
 
