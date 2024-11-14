@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         notas parciais
 // @namespace    http://tampermonkey.net/
-// @version      v0.2
+// @version      v1.1
 // @description  try to take over the world!
 // @author       Lucas Monteiro
 // @match        http://sigeduca.seduc.mt.gov.br/ged/hwmlancaavaliacaonotahab.aspx?*
@@ -160,6 +160,7 @@ function addCopyBtn(ele,v) {
 
     // Loop com pausas para aguardar a propriedade display do elemento gx_ajax_notification ser 'none'
     async function waitForNotificationHidden(bima) {
+        parcial = document.getElementById("myInputField").value;
         var output = [['Nome - cod','turma','disciplina','lançou nota?','bimestre']];
         var bb = bima;
         const bim = document.getElementById("vGEDMATDISCAVAREF");
@@ -292,29 +293,75 @@ function addCopyBtn(ele,v) {
     const bim = document.getElementById("vGEDMATDISCAVAREF");
     var bimes = getSelectedValues(bim);
 
-    for (var i = 0; i < bimes.length; i++) {
-        addCopyBtn(document.getElementById("TABLE4"),bimes[i]);
-
-    }
+    
 
     for (var k = 0; k < bimes.length; k++) {
         addPCABtn(document.getElementById("TABLE4"),bimes[k]);
 
     }
 
-    var ppp = document.getElementById("TABLE4");
+    
+
+
+    //--------------------------- lançar notas parciais -------
+    // Cria um elemento div para o menu flutuante
+    var floatingMenu2 = document.createElement('div');
+    floatingMenu2.style.position = 'fixed';
+    floatingMenu2.style.bottom = '50%';
+    floatingMenu2.style.left = '0';
+    floatingMenu2.style.transform = 'translateY(50%)';
+    floatingMenu2.style.backgroundColor = '#fff';
+    floatingMenu2.style.padding = '10px';
+    floatingMenu2.style.border = '1px solid #ccc';
+    floatingMenu2.style.borderRadius = '5px';
+    floatingMenu2.style.zIndex = '9999';
+    floatingMenu2.setAttribute('id', 'floating-menu2'); // Adiciona um ID ao menu
+
+    // Cria o botão principal "Carimbo Digital"
+    var mainButton2 = document.createElement('button');
+    mainButton2.textContent = '(em teste)';
+    mainButton2.addEventListener('click', toggleSubMenu2);
+    floatingMenu2.appendChild(mainButton2);
+
+    // Cria o submenu
+    var subMenu2 = document.createElement('div');
+    subMenu2.style.display = 'none';
+    subMenu2.style.position = 'absolute';
+    subMenu2.style.top = '100%';
+    subMenu2.style.left = '0';
+    subMenu2.style.backgroundColor = '#fff';
+    subMenu2.style.border = '1px solid #ccc';
+    subMenu2.style.borderRadius = '5px';
+    subMenu2.style.padding = '5px';
+    subMenu2.style.zIndex = '9999';
+
+    //var ppp = document.getElementById("TABLE4");
     const inputField = document.createElement('input');
     inputField.type = 'text';
     inputField.id = 'myInputField';
     inputField.value = '4,04';
     inputField.placeholder = 'Digite algo...';
 
-    ppp.insertBefore(inputField, ppp.firstChild);
+    subMenu2.insertBefore(inputField, subMenu2.firstChild);
 
+    for (var i = 0; i < bimes.length; i++) {
+        //addCopyBtn(document.getElementById("TABLE4"),bimes[i]);
+        addCopyBtn(subMenu2,bimes[i]);
+    }
 
+    function toggleSubMenu2() {
+        if (subMenu2.style.display === 'none') {
+            subMenu2.style.display = 'block';
+        } else {
+            subMenu2.style.display = 'none';
+        }
+    }
 
+    // Adiciona o submenu ao menu flutuante
+    floatingMenu2.appendChild(subMenu2);
 
-
+    // Adiciona o menu flutuante à página
+    document.body.appendChild(floatingMenu2);
 
     //--------------------------- agora para puxar manual as notas -------
     // Cria um elemento div para o menu flutuante
@@ -375,6 +422,13 @@ function addCopyBtn(ele,v) {
     // Adiciona o menu flutuante à página
     document.body.appendChild(floatingMenu);
 
+
+
+
+
+
+
+
     // Estilo para ocultar o menu durante a impressão
     var style = document.createElement('style');
     style.innerHTML = '@media print { #floating-menu { display: none !important; } }';
@@ -388,6 +442,7 @@ function addCopyBtn(ele,v) {
             subMenu.style.display = 'none';
         }
     }
+
 
 
     function notaManual(b){
